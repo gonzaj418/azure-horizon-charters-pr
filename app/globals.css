@@ -2009,10 +2009,12 @@ h2,
   border-top: 1px solid var(--line);
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
   margin: 3rem auto 0;
   max-width: 1180px;
-  padding: 1.5rem 0;
+  padding: 2.5rem clamp(1.25rem, 4vw, 3rem);
+  text-align: center;
 }
 
 .kayak-wordmark {
@@ -2032,12 +2034,14 @@ h2,
 .kayak-feature p {
   font-size: 0.9rem;
   margin: 0.25rem 0 0;
+  max-width: 760px;
 }
 
 .kayak-feature > a {
   border-bottom: 1px solid var(--ink);
   font-size: 0.75rem;
   font-weight: 900;
+  justify-self: center;
   padding-bottom: 0.25rem;
 }
 

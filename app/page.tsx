@@ -12,7 +12,7 @@ type PublicReview = {
   language: string;
 };
 
-const galleryImages = Array.from({ length: 41 }, (_, index) => {
+const galleryImages = Array.from({ length: 42 }, (_, index) => {
   const number = String(index + 1).padStart(2, "0");
   return {
     full: `/images/gallery/${number}-full.webp`,
