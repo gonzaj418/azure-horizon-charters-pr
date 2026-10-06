@@ -2545,3 +2545,26 @@ footer p {
   .floating-whatsapp { bottom: .75rem; right: .75rem; font-size: .66rem; padding: .48rem .75rem .48rem .48rem; }
   .floating-whatsapp span { width: 1.7rem; height: 1.7rem; }
 }
+
+
+/* Extra-compact selector cards on phones */
+@media (max-width: 700px) {
+  .planner-wrap { width: calc(100% - .7rem); padding: .7rem; }
+  .planner-intro { margin-bottom: .55rem; }
+  .planner-intro h2 { font-size: .88rem; }
+  .planner-intro p { font-size: .66rem; }
+  .planner-grid { gap: .38rem; }
+  .planner-grid input, .planner-grid select { min-height: 2rem; font-size: .74rem; }
+  .planner-results { margin-top: .65rem; }
+  .planner-results-heading strong { font-size: .88rem; }
+  .planner-results-heading span { font-size: .62rem; }
+  .planner-option-grid { gap: .45rem; }
+  .planner-option-card { grid-template-columns: 76px 1fr; border-radius: 12px; }
+  .planner-option-card img { min-height: 100px; }
+  .planner-option-card > div { padding: .48rem .55rem; gap: .12rem; }
+  .planner-option-card h3 { font-size: .78rem; line-height: 1.1; }
+  .planner-option-card p { font-size: .58rem; line-height: 1.2; }
+  .planner-option-card strong { font-size: .98rem; }
+  .planner-option-card small { font-size: .54rem; line-height: 1.15; }
+  .planner-option-button { min-height: 1.7rem; padding: .25rem .35rem; font-size: .49rem; letter-spacing: .035em; }
+}
