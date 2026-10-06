@@ -2518,3 +2518,30 @@ footer p {
   .planner-option-card small { font-size:.7rem; line-height:1.25; min-height:0; }
   .planner-option-button { min-height:2.55rem; padding:.55rem .75rem; font-size:.66rem; margin-top:.2rem; }
 }
+
+
+/* Compact mobile charter selector */
+@media (max-width: 700px) {
+  .planner-wrap { width: calc(100% - 1rem); padding: .9rem; }
+  .planner-intro { gap: .55rem; margin-bottom: .75rem; }
+  .mini-icon { width: 2.15rem; height: 2.15rem; font-size: .95rem; flex: 0 0 auto; }
+  .planner-intro h2 { font-size: .95rem; margin-bottom: .1rem; }
+  .planner-intro p { font-size: .72rem; line-height: 1.35; }
+  .planner-grid { gap: .5rem; }
+  .planner-grid label { font-size: .6rem; gap: .25rem; }
+  .planner-grid input, .planner-grid select { min-height: 2.35rem; padding: 0 .65rem; font-size: .82rem; }
+  .planner-results { margin-top: .85rem; }
+  .planner-results-heading { margin-bottom: .55rem; }
+  .planner-results-heading h3 { font-size: 1rem; margin-bottom: 0; }
+  .planner-results-heading span { font-size: .7rem; }
+  .planner-option-card { grid-template-columns: 108px 1fr; }
+  .planner-option-card img { min-height: 118px; }
+  .planner-option-card > div { padding: .6rem .7rem; gap: .2rem; }
+  .planner-option-card h3 { font-size: .9rem; }
+  .planner-option-card p { font-size: .67rem; }
+  .planner-option-card strong { font-size: 1.12rem; line-height: 1.05; }
+  .planner-option-card small { font-size: .62rem; }
+  .planner-option-button { min-height: 2rem; padding: .35rem .5rem; font-size: .57rem; letter-spacing: .055em; }
+  .floating-whatsapp { bottom: .75rem; right: .75rem; font-size: .66rem; padding: .48rem .75rem .48rem .48rem; }
+  .floating-whatsapp span { width: 1.7rem; height: 1.7rem; }
+}
