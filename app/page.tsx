@@ -95,6 +95,24 @@ const bookingBoats: Record<BoatId, BookingBoat> = {
   },
 };
 
+type PlannerBoat = {
+  id: BoatId;
+  name: string;
+  baseGuests: number;
+  selectorMax: number;
+  local4?: number;
+  local6?: number;
+  culebraVieques?: number;
+};
+
+const plannerBoats: PlannerBoat[] = [
+  { id: "mako24", name: "Mako 26", baseGuests: 6, selectorMax: 6, local6: 850, culebraVieques: 1500 },
+  { id: "hydra28", name: "Hydra-Sports 28", baseGuests: 6, selectorMax: 8, local4: 650, local6: 850, culebraVieques: 1500 },
+  { id: "hydra33", name: "Hydra-Sports 33", baseGuests: 10, selectorMax: 12, local4: 850, local6: 1100, culebraVieques: 1700 },
+  { id: "grady38", name: "Grady-White 38", baseGuests: 10, selectorMax: 12, local4: 1100, local6: 1400, culebraVieques: 1700 },
+  { id: "stamas42", name: "Stamas 42", baseGuests: 10, selectorMax: 12, local4: 1100, local6: 1400 },
+];
+
 const copy = {
   en: {
     promo: "2026 Fajardo charter specials · Private trips from $650",
@@ -108,15 +126,15 @@ const copy = {
     fleetCta: "See boats & prices",
     trust: ["Private boat", "Captain included", "Fuel included", "Villa Marina meeting point"],
     plannerTitle: "Find your best option",
-    plannerText: "All trips meet at Villa Marina, Fajardo. Send one request and receive available options.",
+    plannerText: "Choose your group, destination and duration to see matching boats and estimated prices instantly.",
     date: "Preferred date",
     guests: "Guests",
     destination: "Destination",
     duration: "Duration",
     selectDate: "Choose a date",
-    groupOptions: ["1–2 guests", "3–4 guests", "5–6 guests", "7–10 guests"],
-    destinations: ["Icacos", "Palomino", "Culebra / Vieques", "Fishing charter", "Help me choose"],
-    durations: ["4 hours", "5-hour fishing", "6 hours", "Custom trip"],
+    groupOptions: ["1 guest", "2 guests", "3 guests", "4 guests", "5 guests", "6 guests", "7 guests", "8 guests", "9 guests", "10 guests", "11 guests", "12 guests"],
+    destinations: ["Icacos", "Palomino", "Culebra", "Vieques", "Fishing charter", "Help me choose"],
+    durations: ["4 hours", "5-hour fishing", "6 hours", "7 hours", "8 hours"],
     from: "Trips from",
     availability: "Final boat, authorized capacity and price are confirmed before deposit.",
     fleetEyebrow: "CHOOSE YOUR STYLE",
@@ -351,15 +369,15 @@ const copy = {
     fleetCta: "Ver botes y precios",
     trust: ["Bote privado", "Capitán incluido", "Combustible incluido", "Encuentro en Villa Marina"],
     plannerTitle: "Encuentra tu mejor opción",
-    plannerText: "Todos los viajes se encuentran en Villa Marina, Fajardo. Envía una solicitud y recibe las opciones disponibles.",
+    plannerText: "Escoge tu grupo, destino y duración para ver al instante los botes compatibles y precios estimados.",
     date: "Fecha preferida",
     guests: "Personas",
     destination: "Destino",
     duration: "Duración",
     selectDate: "Escoge una fecha",
-    groupOptions: ["1–2 personas", "3–4 personas", "5–6 personas", "7–10 personas"],
-    destinations: ["Icacos", "Palomino", "Culebra / Vieques", "Charter de pesca", "Ayúdame a escoger"],
-    durations: ["4 horas", "Pesca 5 horas", "6 horas", "Viaje personalizado"],
+    groupOptions: ["1 persona", "2 personas", "3 personas", "4 personas", "5 personas", "6 personas", "7 personas", "8 personas", "9 personas", "10 personas", "11 personas", "12 personas"],
+    destinations: ["Icacos", "Palomino", "Culebra", "Vieques", "Charter de pesca", "Ayúdame a escoger"],
+    durations: ["4 horas", "Pesca 5 horas", "6 horas", "7 horas", "8 horas"],
     from: "Viajes desde",
     availability: "El bote, la capacidad autorizada y el precio final se confirman antes del depósito.",
     fleetEyebrow: "ESCOGE TU ESTILO",
@@ -678,13 +696,54 @@ export default function Home() {
       .catch(() => setApprovedReviews([]));
   }, []);
 
+  const plannerGuestCount = Number(guests) + 1;
+  const plannerDestination = t.destinations[Number(destination)];
+  const plannerDurationIndex = Number(duration);
+  const isLongRoute = Number(destination) === 2 || Number(destination) === 3;
+  const isFishing = Number(destination) === 4 || plannerDurationIndex === 1;
+
+  const plannerOptions = useMemo(() => {
+    return plannerBoats.flatMap((boat) => {
+      if (plannerGuestCount > boat.selectorMax) return [];
+      if (isFishing && boat.id !== "mako24") return [];
+      if (isLongRoute) {
+        if (!boat.culebraVieques) return [];
+        if (plannerDurationIndex !== 3 && plannerDurationIndex !== 4) return [];
+        const extraHours = plannerDurationIndex === 4 ? 1 : 0;
+        return [{ boat, price: boat.culebraVieques + extraHours * 150, extraGuestFee: 0, extraHourFee: extraHours * 150 }];
+      }
+      if (isFishing) {
+        if (plannerDurationIndex !== 1) return [];
+        return [{ boat, price: 850, extraGuestFee: 0, extraHourFee: 0 }];
+      }
+      let basePrice: number | undefined;
+      let extraHours = 0;
+      if (plannerDurationIndex === 0) basePrice = boat.local4;
+      if (plannerDurationIndex === 2) basePrice = boat.local6;
+      if (plannerDurationIndex === 3) { basePrice = boat.local6; extraHours = 1; }
+      if (plannerDurationIndex === 4) { basePrice = boat.local6; extraHours = 2; }
+      if (!basePrice) return [];
+      const extraGuests = Math.max(0, plannerGuestCount - boat.baseGuests);
+      const extraGuestFee = extraGuests * 100;
+      const extraHourFee = extraHours * 100;
+      return [{ boat, price: basePrice + extraGuestFee + extraHourFee, extraGuestFee, extraHourFee }];
+    }).sort((a, b) => a.price - b.price);
+  }, [plannerGuestCount, isLongRoute, isFishing, plannerDurationIndex]);
+
+  const optionWhatsAppLink = (boatName: string, price: number) => {
+    const message = language === "es"
+      ? `Hola Azure Horizon, me interesa esta opción del selector. Fecha: ${date || "por confirmar"}. Personas: ${plannerGuestCount}. Destino: ${plannerDestination}. Duración: ${t.durations[plannerDurationIndex]}. Bote: ${boatName}. Precio estimado: ${formatPrice(price)}. Favor confirmar disponibilidad, capacidad autorizada y precio final.`
+      : `Hi Azure Horizon, I am interested in this selector option. Date: ${date || "to be confirmed"}. Guests: ${plannerGuestCount}. Destination: ${plannerDestination}. Duration: ${t.durations[plannerDurationIndex]}. Boat: ${boatName}. Estimated price: ${formatPrice(price)}. Please confirm availability, authorized capacity and final price.`;
+    return `https://wa.me/17874734037?text=${encodeURIComponent(message)}`;
+  };
+
   const quoteLink = useMemo(() => {
     const message =
       language === "es"
-        ? `Hola Azure Horizon, quiero opciones de botes. Fecha: ${date || "por confirmar"}. Personas: ${t.groupOptions[Number(guests)]}. Destino: ${t.destinations[Number(destination)]}. Duración: ${t.durations[Number(duration)]}. Encuentro: Villa Marina, Fajardo.`
-        : `Hi Azure Horizon, I would like boat options. Date: ${date || "to be confirmed"}. Guests: ${t.groupOptions[Number(guests)]}. Destination: ${t.destinations[Number(destination)]}. Duration: ${t.durations[Number(duration)]}. Meeting point: Villa Marina, Fajardo.`;
+        ? `Hola Azure Horizon, quiero opciones de botes. Fecha: ${date || "por confirmar"}. Personas: ${plannerGuestCount}. Destino: ${plannerDestination}. Duración: ${t.durations[plannerDurationIndex]}. Encuentro: Villa Marina, Fajardo.`
+        : `Hi Azure Horizon, I would like boat options. Date: ${date || "to be confirmed"}. Guests: ${plannerGuestCount}. Destination: ${plannerDestination}. Duration: ${t.durations[plannerDurationIndex]}. Meeting point: Villa Marina, Fajardo.`;
     return `https://wa.me/17874734037?text=${encodeURIComponent(message)}`;
-  }, [date, destination, duration, guests, language]);
+  }, [date, plannerDestination, plannerDurationIndex, plannerGuestCount, language, t.durations]);
 
   const formatPrice = (amount: number) =>
     amount.toLocaleString("en-US", {
@@ -862,9 +921,50 @@ export default function Home() {
               ))}
             </select>
           </label>
-          <a className="button planner-button" href={quoteLink} rel="noreferrer" target="_blank">
-            {t.quote} <span aria-hidden="true">→</span>
-          </a>
+        </div>
+        <div className="planner-results">
+          {isLongRoute && plannerDurationIndex !== 3 && plannerDurationIndex !== 4 ? (
+            <div className="planner-notice">
+              {language === "es"
+                ? "Culebra y Vieques son viajes base de 7 horas. Escoge 7 horas o un máximo de 8 horas (+$150)."
+                : "Culebra and Vieques are 7-hour base trips. Choose 7 hours or a maximum of 8 hours (+$150)."}
+            </div>
+          ) : plannerOptions.length > 0 ? (
+            <>
+              <div className="planner-results-heading">
+                <strong>{language === "es" ? "Opciones para tu viaje" : "Options for your trip"}</strong>
+                <span>{language === "es" ? "Precio estimado antes de confirmar disponibilidad" : "Estimated price before availability confirmation"}</span>
+              </div>
+              <div className="planner-option-grid">
+                {plannerOptions.map(({ boat, price, extraGuestFee, extraHourFee }) => (
+                  <article className="planner-option-card" key={boat.id}>
+                    <img alt={boat.name} src={bookingBoats[boat.id].image} />
+                    <div>
+                      <h3>{boat.name}</h3>
+                      <p>{plannerGuestCount} {language === "es" ? "personas" : "guests"} · {plannerDestination} · {t.durations[plannerDurationIndex]}</p>
+                      <strong>{formatPrice(price)}</strong>
+                      {(extraGuestFee > 0 || extraHourFee > 0) && (
+                        <small>
+                          {extraGuestFee > 0 && (language === "es" ? `Incluye ${formatPrice(extraGuestFee)} por personas adicionales. ` : `Includes ${formatPrice(extraGuestFee)} additional-guest fee. `)}
+                          {extraHourFee > 0 && (language === "es" ? `Incluye ${formatPrice(extraHourFee)} por hora(s) adicional(es).` : `Includes ${formatPrice(extraHourFee)} extra-hour fee.`)}
+                        </small>
+                      )}
+                      <a className="button planner-option-button" href={optionWhatsAppLink(boat.name, price)} rel="noreferrer" target="_blank">
+                        {language === "es" ? "Solicitar esta opción" : "Request this option"} <span aria-hidden="true">→</span>
+                      </a>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="planner-notice">
+              {language === "es"
+                ? "No hay una opción automática para esta combinación. Contáctanos para una cotización personalizada."
+                : "There is no automatic option for this combination. Contact us for a custom quote."}
+              <a href={quoteLink} rel="noreferrer" target="_blank">{language === "es" ? " Consultar por WhatsApp →" : " Ask on WhatsApp →"}</a>
+            </div>
+          )}
         </div>
         <div className="planner-foot">
           <strong>{t.from} $650</strong>
