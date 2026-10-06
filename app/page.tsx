@@ -138,9 +138,9 @@ const copy = {
     from: "Trips from",
     availability: "Final boat, authorized capacity and price are confirmed before deposit.",
     fleetEyebrow: "CHOOSE YOUR STYLE",
-    fleetTitle: "Five clear options. More boats on request.",
+    fleetTitle: "5 boat options for Icacos & Palomino",
     fleetText:
-      "Start with the best-value boat or step up for more space and power. We confirm the operating captain and exact vessel before you reserve.",
+      "Choose your boat for Icacos or Palomino. Additional guests are +$100 per person and additional hours are +$100/hour. Culebra & Vieques use special 7-hour pricing; one additional hour is +$150 (8-hour maximum). We confirm the operating captain, exact vessel and final price before you reserve.",
     bestValue: "BEST VALUE",
     moreSpace: "MORE SPACE",
     premium: "2021 PREMIUM",
@@ -381,9 +381,9 @@ const copy = {
     from: "Viajes desde",
     availability: "El bote, la capacidad autorizada y el precio final se confirman antes del depósito.",
     fleetEyebrow: "ESCOGE TU ESTILO",
-    fleetTitle: "Cinco opciones claras. Más botes por cotización.",
+    fleetTitle: "5 opciones de botes para Icacos y Palomino",
     fleetText:
-      "Comienza con el mejor precio o sube a una embarcación con más espacio y potencia. Confirmamos capitán y bote exacto antes de reservar.",
+      "Escoge tu bote para Icacos o Palomino. Personas adicionales +$100 por persona y horas adicionales +$100/hora. Culebra y Vieques tienen tarifa especial base de 7 horas; una hora adicional cuesta +$150 (máximo 8 horas). Confirmamos el capitán, el bote exacto y el precio final antes de reservar.",
     bestValue: "MEJOR PRECIO",
     moreSpace: "MÁS ESPACIO",
     premium: "PREMIUM 2021",
