@@ -13,7 +13,8 @@
     "test": "npm run build && node --test tests/rendered-html.test.mjs",
     "validate:artifact": "bash scripts/validate-artifact.sh",
     "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
-    "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate"
+    "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate",
+    "deploy": "npm run build && wrangler deploy dist/server/index.js --name azure-horizon-charters-pr --compatibility-date 2026-10-06 --compatibility-flags nodejs_compat"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
