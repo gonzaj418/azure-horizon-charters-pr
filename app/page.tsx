@@ -323,6 +323,10 @@ const copy = {
         "Four-hour trips normally include the captain, fuel for the confirmed local route, ice, water, soft drinks, local beer and snacks. Six-hour trips add a full meal.",
       ],
       [
+        "Is gratuity included?",
+        "Gratuity is not included in the charter price. Tips for the captain and crew are appreciated for great service and are left to the guest’s discretion.",
+      ],
+      [
         "How do I reserve?",
         "Choose a boat and trip, send your date and contact details, then secure the date with a 30% deposit after availability is confirmed. The remaining balance is due on the trip day.",
       ],
@@ -564,6 +568,10 @@ const copy = {
       [
         "¿Qué está incluido?",
         "Las cuatro horas normalmente incluyen capitán, combustible para la ruta local confirmada, hielo, agua, refrescos, cerveza local y picadera. Las seis horas añaden una comida fuerte.",
+      ],
+      [
+        "¿La propina está incluida?",
+        "La propina no está incluida en el precio del charter. Si recibes un buen servicio, las propinas para el capitán y la tripulación son bienvenidas y quedan a discreción del cliente.",
       ],
       [
         "¿Cómo reservo?",
